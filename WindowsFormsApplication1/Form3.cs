@@ -348,11 +348,13 @@ namespace WindowsFormsApplication1
             {
                 while(reader.Read())
                 {
-                    string name = reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3);
-                    string uid = reader.GetOracleNumber(0).ToString();
+                    string name = reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3); // GetString(columnIndex)
+                    string uid = reader.GetOracleNumber(0).ToString(); //order of columns returned by select 
                     ListViewItem item = new ListViewItem(new string[] { uid,name });
                     listView1.Items.Add(item);
                 }
+                button5.Enabled = true;
+                button6.Enabled = true;
             }
             connection.Close();
             reader.Close();
@@ -391,10 +393,18 @@ namespace WindowsFormsApplication1
                         radioButton3.Checked = true;
 
                     textBox5.Text = reader.GetOracleNumber(7).ToString();
-                    byte[] imageBytes = new byte[10485760];
-                    reader.GetBytes(8, 0, imageBytes, 0, 10485760);
-                    Bitmap image = (Bitmap)(new ImageConverter()).ConvertFrom(imageBytes);
-                    pictureBox1.Image = image;
+                    try
+                    {
+                        byte[] imageBytes = new byte[10485760];//System.InvalidOperationException
+                        reader.GetBytes(8, 0, imageBytes, 0, 10485760);
+                        Bitmap image = (Bitmap)(new ImageConverter()).ConvertFrom(imageBytes);
+                        pictureBox1.Image = image;
+                    }
+                    catch(System.InvalidOperationException)
+                    {
+                        pictureBox1.Image = pictureBox1.InitialImage;
+
+                    }
                 }
                 add = false;
                 textBox4.Enabled =  false;
@@ -408,6 +418,25 @@ namespace WindowsFormsApplication1
                 connection.Close();
                 reader.Close();
             }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Admissions f = new Admissions(decimal.Parse(textBox4.Text));
+            f.Text = f.Text + " " + textBox1.Text + " " + textBox2.Text + " " + textBox3.Text;
+            f.Show();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Dispose(false);
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            decimal uid = decimal.Parse(textBox4.Text);
+            Appointments f = new Appointments(uid);
+            f.Show();
         }
     }
 }

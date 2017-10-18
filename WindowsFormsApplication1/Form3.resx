@@ -737,6 +737,9 @@
   <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="button5.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="button5.Location" type="System.Drawing.Point, System.Drawing">
     <value>505, 348</value>
   </data>
@@ -806,6 +809,9 @@
   </data>
   <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="button6.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="button6.Location" type="System.Drawing.Point, System.Drawing">
     <value>634, 348</value>

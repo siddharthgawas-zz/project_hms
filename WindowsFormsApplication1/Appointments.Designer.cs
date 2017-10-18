@@ -139,6 +139,7 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.CustomFormat = "";
+            this.dateTimePicker1.Enabled = false;
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dateTimePicker1.Location = new System.Drawing.Point(463, 64);
             this.dateTimePicker1.Name = "dateTimePicker1";
@@ -148,6 +149,7 @@
             // 
             // dateTimePicker2
             // 
+            this.dateTimePicker2.Enabled = false;
             this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.dateTimePicker2.Location = new System.Drawing.Point(586, 64);
             this.dateTimePicker2.Name = "dateTimePicker2";
@@ -184,6 +186,8 @@
             this.columnHeader5,
             this.columnHeader6,
             this.columnHeader7});
+            this.listView1.FullRowSelect = true;
+            this.listView1.GridLines = true;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
             this.listView1.Location = new System.Drawing.Point(28, 170);
@@ -195,7 +199,7 @@
             // 
             // columnHeader1
             // 
-            this.columnHeader1.Text = "UID";
+            this.columnHeader1.Text = "ID";
             this.columnHeader1.Width = 72;
             // 
             // columnHeader2
