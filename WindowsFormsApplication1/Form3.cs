@@ -25,6 +25,12 @@ namespace WindowsFormsApplication1
 
         }
 
+        public Form3(decimal uid)
+        {
+            InitializeComponent();
+            connection = new OracleConnection(ConfigurationManager.ConnectionStrings["project_hms"].ConnectionString);
+            textBox4.Text = uid.ToString();
+        }
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
 
