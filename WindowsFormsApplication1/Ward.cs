@@ -119,7 +119,7 @@ namespace WindowsFormsApplication1
         private void load_bed(decimal ward_id)//comboBox
         {
 
-            string query = "SELECT * FROM BED WHERE W_ID = :ward_id AND STATUS = 'A'";
+            string query = "SELECT * FROM BED WHERE W_ID = :ward_id ORDER BY num";
             command = new OracleCommand(query, connection);
             connection.Open();
             OracleParameter p = command.Parameters.Add(new OracleParameter("ward_id", OracleType.Number));
@@ -130,11 +130,14 @@ namespace WindowsFormsApplication1
             listView2.Items.Clear();
             while (reader.Read())
             { 
-                comboBox5.Items.Add(reader.GetDecimal(0));
+                
                 string[] i = new string[2];
                 i[0] = reader.GetDecimal(0).ToString();
                 if (reader.GetString(1).Equals("A"))
+                {
+                    comboBox5.Items.Add(reader.GetDecimal(0));
                     i[1] = "Available";
+                }
                 else if (reader.GetString(1).Equals("U"))
                     i[1] = "Unavailable";
                 ListViewItem item = new ListViewItem(i);
@@ -164,6 +167,71 @@ namespace WindowsFormsApplication1
         private void button3_Click(object sender, EventArgs e)//allocate bed
         {
             //on succesfull load_bed()
+            if(string.IsNullOrEmpty(textBox1.Text))
+            {
+                MessageBox.Show("Enter Patient UID");
+                return;
+            }
+
+            string query = "SELECT u_id, f_name, s_name FROM patient WHERE u_id = " + textBox1.Text;
+            command = new OracleCommand(query, connection);
+            connection.Open();
+            reader = command.ExecuteReader();
+            if(!reader.HasRows)
+            {
+                MessageBox.Show("Patient is Not Registered.");
+                connection.Close();
+                return;
+            }
+
+            if(comboBox5.SelectedIndex==-1)
+            {
+                MessageBox.Show("Select an empty Bed");
+                connection.Close();
+                return;
+            }
+
+            reader.Read();
+            string name = reader.GetString(1) + " " + reader.GetString(2);
+            DialogResult result =
+                MessageBox.Show("Allocate " + name + " Bed " + ((decimal)comboBox5.SelectedItem).ToString() + "?", 
+                "Confirm this action", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if(result == DialogResult.No)
+            {
+                connection.Close();
+                return;
+            }
+            decimal admission_id = 1;
+            query = "SELECT id FROM admission ORDER BY id DESC";
+            command = new OracleCommand(query, connection);
+            reader = command.ExecuteReader();
+            if(reader.HasRows)
+            {
+                reader.Read();
+                admission_id = reader.GetDecimal(0);
+                admission_id++;
+            }
+
+            query = "INSERT INTO admission (ID, ADMIT_TIME, U_ID) VALUES("+admission_id.ToString()+",TO_TIMESTAMP('"+
+               dateTimePicker1.Value.ToShortDateString()+" "+dateTimePicker2.Value.ToLongTimeString()+
+               "', 'MM/dd/yyyy HH:MI:SS AM'), " + textBox1.Text+")";
+            command = new OracleCommand(query, connection);
+            
+            decimal i = command.ExecuteNonQuery();
+
+            query = "UPDATE bed SET status = 'U', a_id = " + admission_id.ToString() +
+                " WHERE num = " + ((decimal)comboBox5.SelectedItem).ToString() + " AND w_id = " + selected_ward_id;
+            command = new OracleCommand(query, connection);
+
+            decimal j = command.ExecuteNonQuery();
+            connection.Close();
+            if (i > 0&&j>0)
+            {
+                comboBox5.Text = "";
+                textBox1.Text = "";
+                load_bed(selected_ward_id);
+            }
+               
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -199,7 +267,75 @@ namespace WindowsFormsApplication1
             string query = "SELECT num FROM bed WHERE w_id = "+ selected_ward_id+" ORDER BY num DESC";
             command = new OracleCommand(query, connection);
             connection.Open();
-            
+            reader = command.ExecuteReader();
+            decimal bed_no = 1;
+            if(reader.HasRows)
+            {
+                reader.Read();
+                bed_no = reader.GetDecimal(0);
+                bed_no++;
+            }
+
+            query = "INSERT INTO bed (NUM, STATUS, W_ID) VALUES(" + bed_no.ToString() + ", 'A', " + selected_ward_id.ToString() + ")";
+            command = new OracleCommand(query, connection);
+            decimal t = command.ExecuteNonQuery();
+            connection.Close();
+            if(t > 0)
+                load_bed(selected_ward_id);
+        }
+
+        private void button6_Click(object sender, EventArgs e) //remove bed
+        {
+            var j = listView2.SelectedItems.GetEnumerator();
+            if (listView2.SelectedIndices.Count == 0)
+                return;
+            j.MoveNext();
+            string bed_no = ((ListViewItem)j.Current).Text;
+            string query = "DELETE bed WHERE num = " + bed_no + " AND w_id = " + selected_ward_id + " AND status = 'A'";
+            command = new OracleCommand(query, connection);
+            connection.Open();
+            decimal t = command.ExecuteNonQuery();
+            connection.Close();
+            if (t > 0)
+                load_bed(selected_ward_id);
+            else
+                MessageBox.Show("Bed Could Not be Removed. Check if it is Available");
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)//deallocate bed
+        {
+            var j = listView2.SelectedItems.GetEnumerator();
+            if (listView2.SelectedIndices.Count == 0)
+                return;
+            j.MoveNext();
+            string bed_no = ((ListViewItem)j.Current).Text;
+            string query = "SELECT a_id FROM bed WHERE num = " + bed_no + " AND w_id = " + selected_ward_id + " AND status = 'U'";
+            command = new OracleCommand(query, connection);
+            connection.Open();
+            reader = command.ExecuteReader();
+            if(!reader.HasRows)
+            {
+                connection.Close();
+                return;
+            }
+            reader.Read();
+            decimal admission_id = reader.GetDecimal(0);
+            query = "UPDATE admission SET discharge_time  = TO_TIMESTAMP('" + DateTime.Now.ToShortDateString() + " " +
+                DateTime.Now.ToLongTimeString() + "', 'MM/dd/yyyy HH:MI:SS PM') " +
+                "WHERE id = " + admission_id;
+            command = new OracleCommand(query, connection);
+            decimal i = command.ExecuteNonQuery();
+
+            query = "UPDATE bed SET a_id  = null, status='A' WHERE num= " + bed_no + " AND w_id = " + selected_ward_id;
+            command = new OracleCommand(query, connection);
+            decimal j1 = command.ExecuteNonQuery();
+            connection.Close();
+            if (i>0 && j1>0)
+            {
+                load_bed(selected_ward_id);
+            }
+         
         }
     }
 }

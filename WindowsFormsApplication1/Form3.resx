@@ -837,6 +837,18 @@
   <data name="&gt;&gt;button6.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="column1.Text" xml:space="preserve">
+    <value>UID</value>
+  </data>
+  <data name="column1.Width" type="System.Int32, mscorlib">
+    <value>112</value>
+  </data>
+  <data name="column2.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="column2.Width" type="System.Int32, mscorlib">
+    <value>111</value>
+  </data>
   <data name="listView1.Location" type="System.Drawing.Point, System.Drawing">
     <value>495, 178</value>
   </data>
@@ -857,18 +869,6 @@
   </data>
   <data name="&gt;&gt;listView1.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="column1.Text" xml:space="preserve">
-    <value>UID</value>
-  </data>
-  <data name="column1.Width" type="System.Int32, mscorlib">
-    <value>112</value>
-  </data>
-  <data name="column2.Text" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="column2.Width" type="System.Int32, mscorlib">
-    <value>111</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

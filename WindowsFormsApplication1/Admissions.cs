@@ -46,15 +46,28 @@ namespace WindowsFormsApplication1
             while(reader.Read())
             {
                 DateTime admitTime = reader.GetDateTime(1);
-                DateTime discTime = reader.GetDateTime(2);
-
-                ListViewItem item = new ListViewItem(new string[] {i.ToString(),
-                admitTime.Day+"/"+admitTime.Month+"/"+admitTime.Year,
-                admitTime.Hour+":"+admitTime.Minute+":"+admitTime.Second,
-                discTime.Day+"/"+discTime.Month+"/"+discTime.Year,
-                discTime.Hour+":"+discTime.Minute+":"+discTime.Second,});
-                listView1.Items.Add(item);
-                i++;
+                
+                if(DBNull.Value.Equals(reader.GetValue(2)))
+                {
+                    ListViewItem item = new ListViewItem(new string[] {i.ToString(),
+                    admitTime.Day+"/"+admitTime.Month+"/"+admitTime.Year,
+                    admitTime.Hour+":"+admitTime.Minute+":"+admitTime.Second,
+                    "-/-/-","-:-:-"});
+                    listView1.Items.Add(item);
+                    i++;
+                }
+                else
+                {
+                    DateTime discTime = reader.GetDateTime(2);
+                    ListViewItem item = new ListViewItem(new string[] {i.ToString(),
+                    admitTime.Day+"/"+admitTime.Month+"/"+admitTime.Year,
+                    admitTime.Hour+":"+admitTime.Minute+":"+admitTime.Second,
+                    discTime.Day+"/"+discTime.Month+"/"+discTime.Year,
+                    discTime.Hour+":"+discTime.Minute+":"+discTime.Second,});
+                    listView1.Items.Add(item);
+                    i++;
+                }
+               
             }
 
             reader.Close();

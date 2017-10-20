@@ -441,6 +441,7 @@ namespace WindowsFormsApplication1
         private void button5_Click(object sender, EventArgs e)
         {
             decimal uid = decimal.Parse(textBox4.Text);
+            connection.Close();
             Appointments f = new Appointments(uid);
             f.Show();
         }

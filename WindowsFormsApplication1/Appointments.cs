@@ -147,6 +147,7 @@ namespace WindowsFormsApplication1
             if(!reader.HasRows)
             {
                 MessageBox.Show("Appointments Not Found!");
+                connection.Close();
                 return;
             }
             listView1.Items.Clear();
