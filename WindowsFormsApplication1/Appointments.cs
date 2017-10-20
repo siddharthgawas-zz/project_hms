@@ -181,7 +181,8 @@ namespace WindowsFormsApplication1
 
         private void loadDoctors()
         {
-            string query = "SELECT d_id,f_name, s_name, specialization FROM doctor, employee WHERE doctor.eid = employee.eid";
+            string query = "SELECT d_id,f_name, s_name, specialization FROM doctor, employee, status_table WHERE doctor.eid = employee.eid AND "
+                + " status_table.id = employee.status AND status_table.status='Working'";
             d_id = new List<decimal>();
             d_id.Add(-1);
             command = new OracleCommand(query, connection);
@@ -242,7 +243,7 @@ namespace WindowsFormsApplication1
                 return;
             }
 
-            bool condition = (comboBox1.SelectedIndex <= 0) || (comboBox2.SelectedIndex <= 0) || (comboBox3.SelectedIndex <= 0);
+            bool condition = (comboBox1.SelectedIndex <= 0) || (comboBox2.SelectedIndex <= 0) || (comboBox3.SelectedIndex <= 0)||!checkBox1.Checked;
             if(condition)
             {
                 MessageBox.Show("Please enter all the details");
@@ -260,9 +261,25 @@ namespace WindowsFormsApplication1
                 id = reader.GetDecimal(0);
                 id++;
             }
-           
+
+            decimal new_prescription = 1;
+            query = "SELECT * FROM prescription ORDER BY prescription_id DESC";
+            command = new OracleCommand(query, connection);
+            reader = command.ExecuteReader();
+            if(reader.HasRows)
+            {
+                reader.Read();
+                new_prescription = reader.GetDecimal(0);
+                new_prescription++;
+            }
+
+            query = "INSERT INTO prescription VALUES(" + new_prescription + ")";
+            command = new OracleCommand(query, connection);
+            command.ExecuteNonQuery();
+
             query = "INSERT INTO appointment_case (id, status, appointment_type, date_of_app, time_of_app, "
-                + "d_id, p_id) VALUES( :id, :status, :type, :app_date, :app_time, :d_id, :p_id)";
+                + "d_id, p_id, prescription_id) VALUES( :id, :status, :type, TO_DATE('"+dateTimePicker1.Value.ToShortDateString()
+                +"','MM/dd/yyyy'), :app_time, :d_id, :p_id, :prescription_id)";
             command = new OracleCommand(query, connection);
             OracleParameter p = command.Parameters.Add(new OracleParameter("id", OracleType.Number));
             p.Direction = ParameterDirection.Input;
@@ -284,9 +301,9 @@ namespace WindowsFormsApplication1
             else if (comboBox2.SelectedIndex == 2)
                 p.Value = "E"; //emergency
 
-            p = command.Parameters.Add(new OracleParameter("app_date", OracleType.DateTime));
+           /* p = command.Parameters.Add(new OracleParameter("app_date", OracleType.DateTime));
             p.Direction = ParameterDirection.Input;
-            p.Value = dateTimePicker1.Value;
+            p.Value = dateTimePicker1.Value;*/
 
             p = command.Parameters.Add(new OracleParameter("app_time", OracleType.DateTime));
             p.Direction = ParameterDirection.Input;
@@ -302,6 +319,9 @@ namespace WindowsFormsApplication1
             p.Direction = ParameterDirection.Input;
             p.Value = DBNull.Value;
             */
+            p = command.Parameters.Add(new OracleParameter("prescription_id", OracleType.Number));
+            p.Direction = ParameterDirection.Input;
+            p.Value = new_prescription;
 
             p = command.Parameters.Add(new OracleParameter("d_id", OracleType.Number));
             p.Direction = ParameterDirection.Input;
