@@ -31,7 +31,8 @@ namespace WindowsFormsApplication1
         }
         private void button4_Click(object sender, EventArgs e)
         {
-
+            Staff s = new Staff();
+            s.Show();
         }
 
         private void loadHospitalDetails()
