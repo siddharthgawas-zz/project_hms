@@ -43,7 +43,7 @@ namespace WindowsFormsApplication1
             reader.Read();
             if(textBox2.Text.Equals(reader.GetString(1)))
             {
-                Form2 form2 = new Form2();
+                Form2 form2 = new Form2(reader.GetDecimal(2));
                 form2.Show();
                 connection.Close();
                 this.Dispose(false);

@@ -26,6 +26,8 @@ namespace WindowsFormsApplication1
             connection = new OracleConnection(ConfigurationManager.ConnectionStrings["project_hms"].ConnectionString);
             button3.Enabled = false;
             loadDoctors();
+            dateTimePicker1.Value = DateTime.Now;
+            dateTimePicker2.Value = DateTime.Now;
         }
 
         public Appointments(decimal uid)
@@ -37,6 +39,8 @@ namespace WindowsFormsApplication1
             button3.Enabled = true;
             button2.Enabled = false;
             loadDoctors();
+            dateTimePicker1.Value = DateTime.Now;
+            dateTimePicker2.Value = DateTime.Now;
         }
         private void label1_Click(object sender, EventArgs e)
         {

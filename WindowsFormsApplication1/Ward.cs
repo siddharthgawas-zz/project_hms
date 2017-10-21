@@ -47,7 +47,8 @@ namespace WindowsFormsApplication1
 
         private void load_employees_in_ward(decimal ward_id)//load listview
         {
-            string query = "SELECT employee.eid, f_name, s_name, type_table.type FROM employee, nurse, type_table WHERE nurse.ward_id = :ward_id AND nurse.eid = employee.eid AND employee.employee_type = type_table.id";
+            //string query = "SELECT employee.eid, f_name, s_name, type_table.type FROM employee, nurse, type_table WHERE nurse.ward_id = :ward_id AND nurse.eid = employee.eid AND employee.employee_type = type_table.id";
+            string query = "SELECT employee.eid, f_name, s_name, type_table.type FROM employee, nurse, type_table,status_table WHERE nurse.ward_id = :ward_id AND nurse.eid = employee.eid AND employee.employee_type = type_table.id AND employee.status = status_table.id AND status_table.status ='Working'";
             command = new OracleCommand(query, connection);
             connection.Open();
             OracleParameter p = command.Parameters.Add(new OracleParameter("ward_id", OracleType.Number));
@@ -64,7 +65,8 @@ namespace WindowsFormsApplication1
                 listView1.Items.Add(item);
             }
 
-            query = "SELECT employee.eid, f_name, s_name, type_table.type FROM employee, janitor, type_table WHERE janitor.ward_id = :ward_id AND janitor.eid= employee.eid  AND employee.employee_type = type_table.id";
+            //query = "SELECT employee.eid, f_name, s_name, type_table.type FROM employee, janitor, type_table WHERE janitor.ward_id = :ward_id AND janitor.eid= employee.eid  AND employee.employee_type = type_table.id";
+            query = "SELECT employee.eid, f_name, s_name, type_table.type FROM employee, janitor, type_table, status_table WHERE janitor.ward_id = :ward_id AND janitor.eid = employee.eid  AND employee.employee_type = type_table.id AND employee.status = status_table.id AND status_table.status = 'Working'";
             command = new OracleCommand(query, connection);
              p = command.Parameters.Add(new OracleParameter("ward_id", OracleType.Number));
             p.Direction = ParameterDirection.Input;
@@ -83,7 +85,8 @@ namespace WindowsFormsApplication1
 
         private void load_all_employees(decimal ward_id)//load combo box
         {
-            string query = "SELECT employee.eid, f_name, s_name, type_table.type FROM employee, nurse, type_table WHERE nurse.ward_id != :ward_id AND nurse.eid = employee.eid AND employee.employee_type = type_table.id";
+            //string query = "SELECT employee.eid, f_name, s_name, type_table.type FROM employee, nurse, type_table WHERE nurse.ward_id != :ward_id AND nurse.eid = employee.eid AND employee.employee_type = type_table.id";
+            string query = "SELECT employee.eid, f_name, s_name, type_table.type FROM employee, nurse, type_table,status_table WHERE nurse.ward_id != :ward_id AND nurse.eid = employee.eid AND employee.employee_type = type_table.id AND employee.status = status_table.id AND status_table.status ='Working'";
 
             command = new OracleCommand(query, connection);
             connection.Open();
@@ -100,7 +103,8 @@ namespace WindowsFormsApplication1
                 comboBox3.Items.Add(reader.GetString(1) + " " + reader.GetString(2) + " - " + reader.GetString(3));
             }
 
-            query = "SELECT employee.eid, f_name, s_name, type_table.type FROM employee, janitor, type_table WHERE janitor.ward_id != :ward_id AND janitor.eid= employee.eid  AND employee.employee_type = type_table.id";
+            //query = "SELECT employee.eid, f_name, s_name, type_table.type FROM employee, janitor, type_table WHERE janitor.ward_id != :ward_id AND janitor.eid= employee.eid  AND employee.employee_type = type_table.id";
+            query = "SELECT employee.eid, f_name, s_name, type_table.type FROM employee, janitor, type_table, status_table WHERE janitor.ward_id != :ward_id AND janitor.eid = employee.eid  AND employee.employee_type = type_table.id AND employee.status = status_table.id AND status_table.status = 'Working'";
 
             command = new OracleCommand(query, connection);
             p = command.Parameters.Add(new OracleParameter("ward_id", OracleType.Number));

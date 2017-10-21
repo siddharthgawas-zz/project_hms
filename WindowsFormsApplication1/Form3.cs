@@ -22,7 +22,7 @@ namespace WindowsFormsApplication1
         {
             InitializeComponent();
             connection = new OracleConnection(ConfigurationManager.ConnectionStrings["project_hms"].ConnectionString);
-
+            dateTimePicker1.Value = DateTime.Today;
         }
 
         public Form3(decimal uid)
@@ -30,6 +30,7 @@ namespace WindowsFormsApplication1
             InitializeComponent();
             connection = new OracleConnection(ConfigurationManager.ConnectionStrings["project_hms"].ConnectionString);
             textBox4.Text = uid.ToString();
+            dateTimePicker1.Value = DateTime.Today;
         }
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
