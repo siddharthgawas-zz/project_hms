@@ -78,6 +78,10 @@
             // comboBox3
             // 
             this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Items.AddRange(new object[] {
+            "Male",
+            "Female",
+            "Other"});
             this.comboBox3.Location = new System.Drawing.Point(215, 152);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(121, 21);
@@ -121,9 +125,9 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(21, 194);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(45, 13);
+            this.label8.Size = new System.Drawing.Size(49, 13);
             this.label8.TabIndex = 30;
-            this.label8.Text = "Address";
+            this.label8.Text = "Address*";
             // 
             // textBox5
             // 
@@ -137,9 +141,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(408, 190);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(64, 13);
+            this.label7.Size = new System.Drawing.Size(68, 13);
             this.label7.TabIndex = 28;
-            this.label7.Text = "Contact No.";
+            this.label7.Text = "Contact No.*";
             // 
             // comboBox2
             // 
@@ -206,7 +210,7 @@
             this.groupBox1.Size = new System.Drawing.Size(683, 54);
             this.groupBox1.TabIndex = 21;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Name";
+            this.groupBox1.Text = "Name*";
             // 
             // textBox3
             // 
@@ -255,6 +259,7 @@
             this.label1.Size = new System.Drawing.Size(26, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "First";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label10
             // 
@@ -292,9 +297,9 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(6, 59);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(100, 13);
+            this.label13.Size = new System.Drawing.Size(104, 13);
             this.label13.TabIndex = 3;
-            this.label13.Text = "Emergency Contact";
+            this.label13.Text = "Emergency Contact*";
             // 
             // textBox8
             // 
@@ -315,9 +320,9 @@
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(6, 16);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(72, 13);
+            this.label12.Size = new System.Drawing.Size(76, 13);
             this.label12.TabIndex = 0;
-            this.label12.Text = "Specialization";
+            this.label12.Text = "Specialization*";
             // 
             // groupBox3
             // 
@@ -398,14 +403,14 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(749, 60);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(147, 147);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 43;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // button1
             // 
@@ -415,6 +420,7 @@
             this.button1.TabIndex = 44;
             this.button1.Text = "Save";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -424,6 +430,7 @@
             this.button2.TabIndex = 45;
             this.button2.Text = "Cancel";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // StaffAddModify
             // 
